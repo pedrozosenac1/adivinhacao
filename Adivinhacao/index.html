@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Adivinhação</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Jogo de Adivinhação</h1>
+        <p>Advinhe o número entre 1 e 10</p>
+        <form id="formAdivinhacao">
+            <input type="number" id="numeroJogado" min="1" max="10" required>
+            <button type="submit" id="adivinhar">Adivinhar</button>
+            <button type="button" id="reiniciarJogo">Reiniciar</button>
+        </form>
+        <div id="mensagem" class="message"></div>
+    </div>
+<script>
+        var sorteio;
+        var chances;
+        var tentativas = 2;
+
+        function iniciarJogo() {
+            sorteio = Math.floor(Math.random() * 10) + 1; // Gera número entre 1 e 10
+            chances = 0;
+            document.getElementById('mensagem').textContent = '';
+            document.getElementById('numeroJogado').value = '';
+            document.getElementById('numeroJogado').disabled = false;
+            document.getElementById('adivinhar').disabled = false;
+            document.getElementById('formAdivinhacao').reset();
+        }
+
+        document.getElementById('formAdivinhacao').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const numeroJogado = parseInt(document.getElementById('numeroJogado').value);
+            chances++;
+
+            if (numeroJogado === sorteio) {
+                document.getElementById('mensagem').textContent = 'Parabéns! Você acertou o número!';
+                document.getElementById('numeroJogado').disabled = true;
+                document.getElementById('adivinhar').disabled = true;
+            } else {
+                if (chances < tentativas) {
+                    document.getElementById('mensagem').textContent = 'Número errado. Tente novamente!';
+                } else {
+                    document.getElementById('mensagem').textContent = 'Número errado. Você esgotou suas tentativas. O número era ' + sorteio;
+                    document.getElementById('numeroJogado').disabled = true;
+                    document.getElementById('adivinhar').disabled = true;
+                }
+            }
+        });
+
+        document.getElementById('reiniciarJogo').addEventListener('click', function() {
+            iniciarJogo();
+        });
+
+        iniciarJogo();
+    </script>
+</body>
+</html>
